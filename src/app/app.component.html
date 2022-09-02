@@ -1,0 +1,17 @@
+<header class="block">
+    <h1> Internet shop </h1>
+</header>
+
+<nav class="row block">
+    <a [routerLink]="['/']" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"> Home </a>
+    <a [routerLink]="['/about']" routerLinkActive="active"> About </a>
+    <a [routerLink]="['/catalog']" routerLinkActive="active"> Catalog </a>
+</nav>
+
+<main class="block">
+    <router-outlet></router-outlet>
+</main>
+
+<footer class="block">
+    FOOTER
+</footer>

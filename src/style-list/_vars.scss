@@ -1,0 +1,8 @@
+* {
+    --color-primary: #e343ac;
+    --x: 16px;
+
+    @media (max-width: 1024px) {
+        --x: 10px;
+    }
+}

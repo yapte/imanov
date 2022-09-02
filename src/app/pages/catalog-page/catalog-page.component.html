@@ -1,0 +1,7 @@
+<h3> Catalog </h3>
+
+<div class="list row">
+    <product-card *ngFor="let item of products" [product]="item" [qty]="cartQty[item.id]"
+        [routerLink]="['/catalog', item.id]" (onInc)="incrementQty(item.id)" (onDec)="decrementQty(item.id)">
+    </product-card>
+</div>

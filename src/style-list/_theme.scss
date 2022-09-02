@@ -1,0 +1,30 @@
+p {
+    margin: 0;
+}
+
+h1 {
+
+}
+
+h2 {
+
+}
+
+a {
+    text-decoration: none;
+
+    &.active {
+        color: orange;
+    }
+}
+
+.col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--x);
+}
+
+.row {
+    display: flex;
+    gap: var(--x);
+}

@@ -1,0 +1,13 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    .list {
+        flex-wrap: wrap;
+
+        &>* {
+            flex: 0 1 calc(100% / 3 - 12px)
+        }
+    }
+}

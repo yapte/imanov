@@ -1,0 +1,8 @@
+:host {
+    border-radius: var(--x);
+    padding: var(--x);
+    box-shadow: 0 0 24px 0 rgba(0, 0, 0, .06);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}

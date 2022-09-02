@@ -1,0 +1,15 @@
+<h5> {{product.name}} </h5>
+
+<p> {{product.description}} </p>
+
+<p> <strong> Цена: </strong> {{product.price}}руб. </p>
+
+<p> В корзине <strong> {{qty ?? 'пусто'}} </strong> </p>
+
+<div class="row">
+    <button (click)="dec($event)"> - </button>
+    <span> {{qty ?? 0}} </span>
+    <button (click)="inc($event)"> + </button>
+</div>
+
+<!-- <p> Сумма: {{product.getSum()}} </p> -->
