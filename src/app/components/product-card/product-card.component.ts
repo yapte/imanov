@@ -10,6 +10,7 @@ import { Role, User } from 'src/app/models/user';
 export class ProductCardComponent implements OnInit {
   @Input() product: Product;
   @Input() qty: number;
+  // qwe
 
   @Output() onInc = new EventEmitter();
   @Output() onDec = new EventEmitter();
