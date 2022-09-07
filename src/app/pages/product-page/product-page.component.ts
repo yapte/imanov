@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PRODUCTS } from 'src/app/data/products';
@@ -11,16 +12,17 @@ import { Product } from 'src/app/models/product';
 export class ProductPageComponent implements OnInit {
   product: Product;
 
-  constructor(private _activatedRoute: ActivatedRoute) { }
+  constructor(
+    private _http: HttpClient,
+    private _activatedRoute: ActivatedRoute,
+  ) { }
 
   ngOnInit(): void {
-    // this.productId = this._activatedRoute.snapshot.params['productId'];
-
-    this._activatedRoute.params
-      .subscribe(params => {
-        const productId = +params['productId'];
-        this.product = PRODUCTS.find(p => p.id === productId);
-      })
+    const productId = this._activatedRoute.snapshot.params['productId'];
+    this._http.get<Product>(`http://imanov-yii/data-api/products-item?product_id=${productId}`)
+      .subscribe(result => {
+        this.product = result;
+      });
   }
 
 }

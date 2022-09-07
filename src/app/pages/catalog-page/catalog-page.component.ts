@@ -1,5 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, HostBinding, OnInit } from '@angular/core';
 import { PRODUCTS } from 'src/app/data/products';
+import { Category } from 'src/app/models/category';
 import { Product } from 'src/app/models/product';
 
 @Component({
@@ -8,11 +10,11 @@ import { Product } from 'src/app/models/product';
   styleUrls: ['./catalog-page.component.scss']
 })
 export class CatalogPageComponent implements OnInit {
-
+  categories: Category[];
   products: Product[] = PRODUCTS; // с сервера
   cartQty: Record<number, number> = {}; // с сервера
 
-  constructor() {
+  constructor(private _http: HttpClient) {
     // this.cartQty[1] = 1;
     // this.cartQty[345] = 6;
 
@@ -36,6 +38,11 @@ export class CatalogPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this._http.get<Category[]>('http://imanov-yii/data-api/categories')
+      .subscribe(result => {
+        this.categories = result;
+        console.log(result);
+      });
   }
 
   incrementQty(productId: number) {
@@ -47,7 +54,7 @@ export class CatalogPageComponent implements OnInit {
   decrementQty(productId: number) {
     // truthy 
     // falsy  == false: false | 0 | null | undefined | ''
-    if (this.cartQty[productId]) { 
+    if (this.cartQty[productId]) {
       this.cartQty[productId] = this.cartQty[productId] - 1;
     }
   }

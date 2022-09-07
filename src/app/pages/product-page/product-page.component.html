@@ -1,5 +1,9 @@
-<h4> {{product.name}} </h4>
+<ng-container *ngIf="product; else loading">
+    <h4> {{product.name}} </h4>
 
-<p> <strong> {{product.description}} </strong></p>
+    <p> <strong> {{product.description}} </strong></p>
+</ng-container>
+
+<ng-template #loading> Loading... </ng-template>
 
 <!-- <p> {{product.price}} - {{product.qty}} </p> -->

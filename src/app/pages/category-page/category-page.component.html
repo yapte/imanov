@@ -1,0 +1,7 @@
+<h2> {{category?.name}} ({{products?.length}}) </h2>
+
+<div class="list row">
+    <product-card *ngFor="let product of products" [product]="product" [qty]="0"
+        [routerLink]="['/catalog', category.id, product.id]">
+    </product-card>
+</div>
