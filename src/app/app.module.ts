@@ -10,6 +10,7 @@ import { CatalogPageComponent } from './pages/catalog-page/catalog-page.componen
 import { ProductCardComponent } from './components/product-card/product-card.component';
 import { ProductPageComponent } from './pages/product-page/product-page.component';
 import { CategoryPageComponent } from './pages/category-page/category-page.component';
+import { FormPageComponent } from './pages/form-page/form-page.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { CategoryPageComponent } from './pages/category-page/category-page.compo
     CatalogPageComponent,
     ProductCardComponent,
     ProductPageComponent,
-    CategoryPageComponent
+    CategoryPageComponent,
+    FormPageComponent
   ],
   imports: [
     BrowserModule,

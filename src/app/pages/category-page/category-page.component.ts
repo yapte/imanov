@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DataApiService } from 'src/app/api/data-api.service';
 import { Category } from 'src/app/models/category';
 import { Product } from 'src/app/models/product';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-category-page',
@@ -15,18 +15,25 @@ export class CategoryPageComponent implements OnInit {
   products: Product[];
 
   constructor(
-    private _http: HttpClient,
+    // private _http: HttpClient,
+    private _dataApi: DataApiService,
     private _activatedRoute: ActivatedRoute,
+    private _router: Router,
   ) { }
 
   ngOnInit(): void {
     const categoryId = this._activatedRoute.snapshot.params['categoryId'];
 
-    this._http.get<{ category: Category, products: Product[] }>(`http://imanov-yii/data-api/products?category_id=${categoryId}`)
+    // this._http.get<{ category: Category, products: Product[] }>(`http://imanov-yii/data-api/products?category_id=${categoryId}`)
+    this._dataApi.getProductsForCategory(categoryId)
       .subscribe(result => {
         this.category = result.category;
         this.products = result.products;
       });
+  }
+
+  go() {
+    this._router.navigate(['/catalog', 2, 1])
   }
 }
 

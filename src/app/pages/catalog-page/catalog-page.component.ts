@@ -1,48 +1,72 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, HostBinding, OnInit } from '@angular/core';
-import { PRODUCTS } from 'src/app/data/products';
+import { Component, OnInit } from '@angular/core';
+import { debounceTime, distinctUntilChanged, filter, map, Subject, tap } from 'rxjs';
+import { DataApiService } from 'src/app/api/data-api.service';
 import { Category } from 'src/app/models/category';
-import { Product } from 'src/app/models/product';
 
 @Component({
   selector: 'app-catalog-page',
   templateUrl: './catalog-page.component.html',
-  styleUrls: ['./catalog-page.component.scss']
+  styleUrls: ['./catalog-page.component.scss'],
 })
 export class CatalogPageComponent implements OnInit {
   categories: Category[];
-  products: Product[] = PRODUCTS; // с сервера
   cartQty: Record<number, number> = {}; // с сервера
 
-  constructor(private _http: HttpClient) {
-    // this.cartQty[1] = 1;
-    // this.cartQty[345] = 6;
+  mouseClicks$: Subject<Date>;
 
-    // {1: 1}
-    // {345: 6} => {345: 7}
+  qty: number;
+  search$: Subject<string>;
 
-    // App
-    // CartQty$: Observable<number> => 
-    //     1. Иконка с корзиной Q (CartQty$.subscribe(qty => Q = qty)), 
-    //     2. На карточке товара кол-во QWERTY (CartQty$.subscribe(x => QWERTY = x))
-
-    // ProductCart
-    //     [+] => newQty = CartQty$.value + 1 => CartQty$.next(newQty)
-    //     [-] => newQty = CartQty$.value - 1 => CartQty$.next(newQty)
-
-    // CartPage
-    //     [ClearCart] => CartQty$.next(0)
-
-    // OrderHistory
-    //     [RepeatOrder] => CartQty$.next(Order.qty)
-  }
+  constructor(
+    private _dataApi: DataApiService,
+  ) { }
 
   ngOnInit(): void {
-    this._http.get<Category[]>('http://imanov-yii/data-api/categories')
-      .subscribe(result => {
-        this.categories = result;
-        console.log(result);
+    // this._http.get<Category[]>('http://imanov-yii/data-api/categories')
+    this._dataApi.getCategories()
+      .subscribe({
+        next: result => {
+          this.categories = result;
+          console.log(result);
+        },
+        error: err => {
+          console.log(err);
+          alert(err.message);
+        },
+        complete: () => {
+          console.log('COMPLETE');
+        },
       });
+
+    this.mouseClicks$ = new Subject();
+    this.mouseClicks$.subscribe({
+      next: (date) => {
+        console.log('First subscription', date);
+      }
+    });
+    this.mouseClicks$.subscribe({
+      next: (date) => {
+        console.log('Second subscription', date);
+      }
+    });
+
+    this.search$ = new Subject<string>();
+    this.search$
+      .pipe(
+        filter(value => value.trim().length > 0),
+        map(value => value.trim()),
+        distinctUntilChanged(),
+        debounceTime(500),
+      )
+      .subscribe(
+        value => {
+          console.log('SendRequest', value);
+        }
+      );
+
+    // this.search$.subscribe(value => {
+    //   this.qty = value.length;
+    // })
   }
 
   incrementQty(productId: number) {
@@ -52,10 +76,19 @@ export class CatalogPageComponent implements OnInit {
   }
 
   decrementQty(productId: number) {
-    // truthy 
-    // falsy  == false: false | 0 | null | undefined | ''
     if (this.cartQty[productId]) {
       this.cartQty[productId] = this.cartQty[productId] - 1;
     }
   }
+
+  emit() {
+    this.mouseClicks$.next(new Date());
+    // console.log('emit');
+  }
+
+  search(e: Event) {
+    const value = (e.target as HTMLInputElement).value;
+    this.search$.next(value);
+  }
 }
+

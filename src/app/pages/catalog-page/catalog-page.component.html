@@ -8,3 +8,7 @@
         [routerLink]="['/catalog', item.id]" (onInc)="incrementQty(item.id)" (onDec)="decrementQty(item.id)">
     </product-card> -->
 </div>
+<button type="button" (click)="emit()"> EMIT </button>
+
+<label> {{qty}} введено </label>
+<input [style.padding.px]="12" type="text" (input)="search($event)" placeholder="Введите что-нибудь для поиска...">
